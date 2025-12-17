@@ -3,7 +3,7 @@ import {Router} from 'express';
 import {z} from 'zod';
 import { toUserProfileResponse, UserProfile, UserProfileResponse } from '../modules/users/user.types';
 import { UnauthorizedError } from '../lib/error';
-import { getUserFromClerk } from '../modules/users/user.service';
+import { getUserFromClerk, updateUserProfile } from '../modules/users/user.service';
 
 export const userRouter = Router();
 
@@ -57,7 +57,7 @@ userRouter.patch("/", async (req, res, next)=>{
 
         try {
             const profile = await updateUserProfile({
-                clerkUserID: auth.userId,
+                clerkUserId: auth.userId,
                 displayName,
                 handle,
                 bio,
