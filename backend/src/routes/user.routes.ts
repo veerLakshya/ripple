@@ -23,6 +23,7 @@ function toResponse(profile: UserProfile) : UserProfileResponse{
 userRouter.get('/', async (req, res, next)=>{
     try{
         const auth = getAuth(req);
+
         if(!auth.userId){
             throw new UnauthorizedError("Unauthorized");
         }
@@ -33,9 +34,45 @@ userRouter.get('/', async (req, res, next)=>{
         res.json({data: response})
 
     } catch(err){
-
+        next(err);
     }
 })
 
 
 // patch    - /api/me
+userRouter.patch("/", async (req, res, next)=>{
+    try{
+        const auth = getAuth(req);
+
+        if(!auth.userId){
+            throw new UnauthorizedError("Unauthorized");
+        }
+
+        const parsedBody = UserProfileUpdateSchema.parse(req.body);
+
+        const displayName = parsedBody.displayName && parsedBody.displayName.trim().length > 0 ? parsedBody.displayName.trim() : null;
+        const handle = parsedBody.handle && parsedBody.handle.trim().length > 0 ? parsedBody.handle.trim() : null;
+        const bio = parsedBody.bio && parsedBody.bio.trim().length > 0 ? parsedBody.bio.trim() : null;
+        const avatarUrl = parsedBody.avatarUrl && parsedBody.avatarUrl.trim().length > 0 ? parsedBody.avatarUrl.trim() : null;
+
+        try {
+            const profile = await updateUserProfile({
+                clerkUserID: auth.userId,
+                displayName,
+                handle,
+                bio,
+                avatarUrl,
+            })
+
+            const response = toResponse(profile);
+
+            res.json({data: response})
+
+        }catch(e){
+            throw e;
+        }
+    }
+    catch(err){
+        next(err);
+    }
+})

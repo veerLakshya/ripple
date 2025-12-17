@@ -39,7 +39,7 @@ export type UserProfileResponse = {
 }
 
 export function toUserProfileResponse(profile: UserProfile) : UserProfileResponse {
-    const {user, clerkEmail, clerkFullName} = profile
+    const {user, clerkEmail, clerkFullName} = profile;
 
     return {
         id: user.id,
