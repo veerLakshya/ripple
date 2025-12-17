@@ -9,6 +9,8 @@ const EnvSchema = z.object({
     DB_NAME : z.string().default('database'),
     DB_USER : z.string().default('user'),
     DB_PASSWORD : z.string().default('password'),
+    CLERK_SECRET_KEY : z.string(),
+    CLERK_PUBLISHABLE_KEY : z.string(),
 })
 
 const parsed = EnvSchema.safeParse(process.env);
