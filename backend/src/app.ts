@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import { notFoundHandler } from './middleware/notFoundHandler';
 import { errorHandler } from './middleware/errorHandler';
 import { clerkMiddleware } from '@clerk/express';
+import { apiRouter } from './routes';
 
 
 export function createApp(){
@@ -21,6 +22,8 @@ export function createApp(){
     )
 
     app.use(express.json());
+
+    app.use('/api', apiRouter);
 
     app.use(notFoundHandler);
     app.use(errorHandler);
